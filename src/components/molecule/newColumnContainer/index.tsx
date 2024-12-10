@@ -1,7 +1,5 @@
 import { useRef, useState } from "react";
-import { Card, CardBody } from "@nextui-org/card";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
+import { Card, CardBody, Input, Button } from "@nextui-org/react";
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 
 type textBoxColor =

@@ -8,7 +8,7 @@ import {
 import Layout from "@/layout";
 import Column from "@/components/molecule/column";
 import NewColumnContainer from "@/components/molecule/newColumnContainer";
-import useKanbanStore from "@/store/useKanbanStore";
+import useKanbanStore, { Item as IItem } from "@/store/useKanbanStore";
 import Board from "@/container/board";
 import getDropEleType from "@/utils/getDropEleType";
 import Item from "@/components/atom/item";
@@ -22,6 +22,8 @@ export default function App() {
     dragContainer,
     onMoveItemSort,
     onMoveItemDrop,
+    deleteItem,
+    addNewItem,
   } = useKanbanStore((state) => state);
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -58,11 +60,29 @@ export default function App() {
     setActiveContainerId(null);
   };
 
-  const handleDeleteItem = (id: UniqueIdentifier) => {
-    console.log(id);
+  const handleDeleteItem = (
+    ItemId: UniqueIdentifier,
+    containerId: UniqueIdentifier,
+  ) => {
+    deleteItem(ItemId, containerId);
   };
-  const handleEditItem = (id: UniqueIdentifier) => {
-    console.log(id);
+
+  const handleEditItem = () => {};
+
+  const handleAddItem = async (
+    e: React.FormEvent<HTMLFormElement>,
+    containerId: UniqueIdentifier,
+  ) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(e.currentTarget)) as Omit<
+      IItem,
+      "id" | "imgUrl" | "labels"
+    >;
+
+    console.log(data);
+
+    addNewItem(containerId, data);
   };
 
   return (
@@ -79,13 +99,16 @@ export default function App() {
             <Column
               key={container.id}
               container={container}
+              handleAddItem={(event) => handleAddItem(event, container.id)}
               handleDelete={(id) => deleteContainer(id)}
             >
               {container.items.map((item) => (
                 <Item
                   key={item.id}
                   className="mb-2"
-                  handleDelete={handleDeleteItem}
+                  handleDelete={(itemId) =>
+                    handleDeleteItem(itemId, container.id)
+                  }
                   handleEdit={handleEditItem}
                   {...item}
                 />

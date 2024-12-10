@@ -236,6 +236,13 @@ interface KanbanStore {
   onMoveItemDrop: (event: DragMoveEvent) => void;
   onEndItemSort: (event: DragEndEvent) => void;
   onEndItemDrop: (event: DragEndEvent) => void;
+
+  // item operation
+  deleteItem: (itemId: UniqueIdentifier, containerId: UniqueIdentifier) => void;
+  addNewItem: (
+    containerId: UniqueIdentifier,
+    data: Omit<Item, "id" | "imgUrl" | "labels">,
+  ) => void;
 }
 
 const useKanbanStore = create<KanbanStore>((set, get) => ({
@@ -464,6 +471,48 @@ const useKanbanStore = create<KanbanStore>((set, get) => ({
 
     newItems[overContainerIndex].items.push(removedItem);
     set({ containers: newItems });
+  },
+  deleteItem: (itemId, containerId) => {
+    set((state) => {
+      const containerIndex = state.containers.findIndex(
+        (container) => container.id === containerId,
+      );
+
+      const newItems = state.containers[containerIndex].items.filter(
+        (item) => item.id !== itemId,
+      );
+
+      state.containers[containerIndex].items = newItems;
+
+      return {
+        ...state,
+        containers: state.containers,
+      };
+    });
+  },
+  addNewItem: (containerId, data) => {
+    set((state) => {
+      const containerIndex = state.containers.findIndex(
+        (container) => container.id === containerId,
+      );
+
+      state.containers[containerIndex].items.push({
+        id: `item-${uuidv4()}`,
+        imgUrl: getAvatar(),
+        labels: [
+          { color: getColor(), title: "Java" },
+          { color: getColor(), title: "Python" },
+          { color: getColor(), title: "Ruby" },
+          { color: getColor(), title: "Go" },
+        ],
+        ...data,
+      });
+
+      return {
+        ...state,
+        containers: state.containers,
+      };
+    });
   },
 }));
 

@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { Card, CardBody } from "@nextui-org/card";
-import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { Input } from "@nextui-org/input";
-import { Divider } from "@nextui-org/divider";
+import {
+  Card,
+  CardBody,
+  ScrollShadow,
+  Input,
+  Divider,
+  Button,
+  Avatar,
+  AvatarGroup,
+} from "@nextui-org/react";
 import { useRef } from "react";
-import { Button } from "@nextui-org/button";
 import { FiUserPlus } from "react-icons/fi";
 import { BsThreeDots } from "react-icons/bs";
-import { Avatar, AvatarGroup } from "@nextui-org/avatar";
 
 import { SearchIcon } from "@/components/atom/icon/SearchIcon";
 import { LayoutIcon } from "@/components/atom/icon/LayoutIcon";
@@ -111,6 +115,7 @@ export default function Layout({ children }: LayoutProps) {
               <ScrollShadow
                 ref={scrollContainerRef}
                 hideScrollBar
+                className="h-full"
                 orientation="horizontal"
               >
                 {children({ settingNewColumn, setSettingNewColumn })}

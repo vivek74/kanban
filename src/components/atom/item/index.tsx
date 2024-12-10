@@ -1,12 +1,8 @@
 import { memo } from "react";
 import { useSortable } from "@dnd-kit/sortable";
-import { Card, CardBody } from "@nextui-org/card";
-import { Chip } from "@nextui-org/chip";
+import { Card, CardBody, Chip, cn, Button, Avatar } from "@nextui-org/react";
 import clsx from "clsx";
 import { CSS } from "@dnd-kit/utilities";
-import { Avatar } from "@nextui-org/avatar";
-import { cn } from "@nextui-org/theme";
-import { Button } from "@nextui-org/button";
 import { UniqueIdentifier } from "@dnd-kit/core";
 
 import { EditDocumentIcon } from "../icon/EditIcon";
@@ -16,7 +12,7 @@ import { Item as IItem } from "@/store/useKanbanStore";
 
 interface ItemProps extends IItem {
   className?: string;
-  handleDelete?: (id: UniqueIdentifier) => void;
+  handleDelete?: (itemId: UniqueIdentifier) => void;
   handleEdit?: (id: UniqueIdentifier) => void;
 }
 
@@ -47,7 +43,8 @@ const Item = memo(function Item({
   });
 
   const maxLabelsToShow = 3;
-  const iconClasses = "text-default-500 pointer-events-none flex-shrink-0";
+  const iconClasses =
+    "text-default-500 pointer-events-none flex-shrink-0 w-4 h-4";
 
   const truncatedDescription =
     description.split(" ").slice(0, 20).join(" ") +
@@ -58,7 +55,7 @@ const Item = memo(function Item({
       {...attributes}
       {...listeners}
       ref={setNodeRef}
-      className={clsx(isDragging && "opacity-50", className)}
+      className={clsx(isDragging && "opacity-50", "w-full", className)}
       shadow="sm"
       style={{
         transition,
